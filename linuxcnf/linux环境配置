@@ -1,0 +1,74 @@
+CentOS系统
+/etc/sysconfig/network-scripts     onboot改为yes     --解决不能上网问题
+service network restart        --重启网卡
+yum install net-tools.x86_64   --安装ifconfig
+yum -y install wget		--安装wget
+
+https://lnmp.org/install.html 一键安装地址
+
+wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz && tar zxf lnmp1.4.tar.gz && cd lnmp1.4 && ./install.sh lnmp  --安装lnmp
+
+服务器配置：
+centos redis：
+yum install lua
+yum install epel-release  --安装源
+yum install redis
+http://blog.csdn.net/blue_it/article/details/53996216
+----------------------------------------------------------
+mysql数据表初始值设定
+alter table table_name auto_increment = 11168;
+mysql数据拷贝：
+set global log_bin_trust_function_creators=TRUE;
+mysql:
+1046 error
+. 编辑mysql配置文件，把其中bind-address = 127.0.0.1注释了
+vi /etc/mysql/mysql.conf.d/mysqld.cnf
+2. 使用root进入mysql命令行，执行如下2个命令，示例中mysql的root账号密码：root
+update user set password=password('123456') where user='root';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root+' WITH GRANT OPTION;
+flush privileges;
+service mysql restart;
+select host, user, password from user;
+select column_name from information_schema.COLUMNS where table_name='user'
+netstat -apn|grep 3306   --查看mysql的状态
+-------------------------------------------------------------------
+当mysql无法远程访问的时候   （尽量不解决该问题）--当IP缺失
+	用root用户登录mysql数据库
+
+	（1）停止MySQL服务，执行net stop mysql;
+
+	（2）在mysql的安装路径下找到配置文件my.ini，
+
+   	找到[mysqld]
+   	输入：skip-grant-tables，保存   不设置权限登录
+	（3）重启mysql服务
+-------------------------------------------
+直接通过iptables进行操作
+	查看已有的iptables规则，以序号显示
+	iptables -L -n --line-numbers
+	删除对应的DROP规则
+	iptables -D INPUT 5
+--------------------------------------------
+show variables like "%timeout%";
+wait_timeout=1728000
+interactive_timeout=1728000
+
+
+宝塔
+yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh
+
+cd /www/server/panel
+python tools.pyc panel 123456
+
+
+#vi /etc/profile 
+export PATH="$PATH:/opt/au1200_rm/build_tools/bin"
+source /etc/profile
+
+lua安装  lua加密
+https://www.cnblogs.com/chevin/p/6229739.html
+
+
+
+
+
